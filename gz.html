@@ -1,1 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Compression</title>
+</head>
+<body>
+    <input type="file" id="fileInput" accept=".csv">
+    <button id="compressBtn">Compress CSV</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+        document.getElementById('compressBtn').addEventListener('click', function () {
+            var fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert('Please select a CSV file.');
+                return;
+            }
+
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var csvData = event.target.result;
+                var compressedData = pako.deflate(csvData, { to: 'string' });
+                var blob = new Blob([compressedData], { type: 'text/csv;charset=utf-8' });
+                saveAs(blob, file.name + '.gz');
+            };
+            reader.readAsBinaryString(file);
+        });
+    </script>
+</body>
+</html>
 
