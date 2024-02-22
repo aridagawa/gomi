@@ -860,7 +860,7 @@ function searchGarbageInfo() {
   if (found) {
     var searchInfo = matchedItems.map(item => {
 　　　const additionalInfo = item[2] ? item[2] : "なし"; // 補足情報がない場合は「なし」と表示する
-      return "ごみの品目：" + item[0] + "、ごみの種類：" + item[1] + "、補足情報：" + additionalInfo;
+      return "・ごみの品目：" + item[0] + "、ごみの種類：" + item[1] + "、補足情報：" + additionalInfo;
     }).join('<br>');
     searchResult.innerHTML = searchInfo;
   } else {
