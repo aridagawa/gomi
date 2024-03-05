@@ -846,23 +846,14 @@ const garbageData = processData(csvData);
 
 // ごみ情報を検索する関数
 function searchGarbageInfo() {
-  var item = document.getElementById("item").value.trim().toLowerCase(); // ユーザー入力を取得し、前後の空白を削除して小文字に変換
-
+  var item = document.getElementById("item").value.trim(); // ユーザー入力を取得し、前後の空白を削除
   var searchResult = document.getElementById("searchResult");
 
-  var found = false;
-  var matchedItems = [];
-  // CSVデータをループして、入力された品目と一部一致するかチェック
-  for (var i = 0; i < garbageData.length; i++) {
-    if (garbageData[i][0].toLowerCase().includes(item)) {
-      matchedItems.push(garbageData[i]);
-      found = true;
-    }
-  }
+  var matchedItems = fuzzySearch(item, garbageData);
 
-  if (found) {
+  if (matchedItems.length > 0) {
     var searchInfo = matchedItems.map(item => {
-　　　const additionalInfo = item[2] ? item[2] : "なし"; // 補足情報がない場合は「なし」と表示する
+      const additionalInfo = item[2] ? item[2] : "なし"; // 補足情報がない場合は「なし」と表示する
       return "・ごみの品目：" + item[0] + "、ごみの種類：" + item[1] + "、補足情報：" + additionalInfo;
     }).join('<br>');
     searchResult.innerHTML = searchInfo;
