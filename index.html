@@ -847,7 +847,16 @@ const garbageData = processData(csvData);
 // あいまい検索関数
 function fuzzySearch(keyword, dataArray) {
   return dataArray.filter(item => {
-    return item[0].toLowerCase().includes(keyword.toLowerCase());
+    // ひらがなとカタカナを区別せずに比較するため、すべてひらがなに変換してから比較する
+    const normalizedKeyword = keyword.replace(/[ぁ-んァ-ン]/g, match => {
+      const charCode = match.charCodeAt(0);
+      return String.fromCharCode(charCode + (0x3040 - 0x30a0));
+    });
+    const normalizedItem = item[0].replace(/[ぁ-んァ-ン]/g, match => {
+      const charCode = match.charCodeAt(0);
+      return String.fromCharCode(charCode + (0x3040 - 0x30a0));
+    });
+    return normalizedItem.toLowerCase().includes(normalizedKeyword.toLowerCase());
   });
 }
 
