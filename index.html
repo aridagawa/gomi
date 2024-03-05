@@ -844,6 +844,13 @@ function processData(csvData) {
 // CSVデータを処理します
 const garbageData = processData(csvData);
 
+// あいまい検索関数
+function fuzzySearch(keyword, dataArray) {
+  return dataArray.filter(item => {
+    return item[0].toLowerCase().includes(keyword.toLowerCase());
+  });
+}
+
 // ごみ情報を検索する関数
 function searchGarbageInfo() {
   var item = document.getElementById("item").value.trim(); // ユーザー入力を取得し、前後の空白を削除
