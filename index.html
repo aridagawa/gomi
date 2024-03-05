@@ -847,16 +847,9 @@ const garbageData = processData(csvData);
 // あいまい検索関数
 function fuzzySearch(keyword, dataArray) {
   return dataArray.filter(item => {
-    // ひらがなとカタカナを区別せずに比較するため、すべてひらがなに変換してから比較する
-    const normalizedKeyword = keyword.replace(/[ぁ-んァ-ン]/g, match => {
-      const charCode = match.charCodeAt(0);
-      return String.fromCharCode(charCode + (0x3040 - 0x30a0));
-    });
-    const normalizedItem = item[0].replace(/[ぁ-んァ-ン]/g, match => {
-      const charCode = match.charCodeAt(0);
-      return String.fromCharCode(charCode + (0x3040 - 0x30a0));
-    });
-    return normalizedItem.toLowerCase().includes(normalizedKeyword.toLowerCase());
+    const normalizedKeyword = keyword.toLowerCase(); // 入力されたキーワードを小文字に変換
+    const normalizedItem = item[0].toLowerCase(); // 比較対象の品目名を小文字に変換
+    return normalizedItem.includes(normalizedKeyword); // 部分一致を検索
   });
 }
 
@@ -889,3 +882,4 @@ document.getElementById("item").addEventListener("keypress", function(event) {
 
 </body>
 </html>
+
