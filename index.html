@@ -847,17 +847,16 @@ const garbageData = processData(csvData);
 // あいまい検索関数
 function fuzzySearch(keyword, dataArray) {
   return dataArray.filter(item => {
-    // ひらがなとカタカナの区別をせずに検索するため、すべてひらがなに変換してから比較する
-    const normalizedKeyword = keyword.replace(/[ぁ-んァ-ン]/g, function(match) {
-      const charCode = match.charCodeAt(0);
-      return String.fromCharCode(charCode - (0x30A1 - 0x3041));
-    });
-    const normalizedItem = item[0].replace(/[ぁ-んァ-ン]/g, function(match) {
-      const charCode = match.charCodeAt(0);
-      return String.fromCharCode(charCode - (0x30A1 - 0x3041));
-    });
-    return normalizedItem.toLowerCase().includes(normalizedKeyword.toLowerCase());
+    // ひらがなとカタカナを区別せずに検索するため、すべてひらがなに変換してから比較する
+    const normalizedKeyword = normalizeKana(keyword).toLowerCase();
+    const normalizedItem = normalizeKana(item[0]).toLowerCase();
+    return normalizedItem.includes(normalizedKeyword);
   });
+}
+
+// カタカナとひらがなを相互変換する関数
+function normalizeKana(str) {
+  return str.replace(/[\u30a1-\u30f6]/g, match => String.fromCharCode(match.charCodeAt(0) - 0x60));
 }
 
 // ごみ情報を検索する関数
